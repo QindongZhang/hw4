@@ -1,0 +1,172 @@
+%one:
+t1=imread('test1.pgm');  
+t2=imread('test2.tif');  
+
+g1=fspecial('gaussian',[3,3],1.5);  
+g2=fspecial('gaussian',[5,5],1.5);  
+g3=fspecial('gaussian',[7,7],1.5);  
+
+figure(1)  
+subplot(2,2,1)  
+imshow(t1);  
+title('原图')  
+subplot(2,2,2)  
+imshow(imfilter(t1,g1));  
+title('3*3高斯滤波器')  
+subplot(2,2,3)  
+imshow(imfilter(t1,g2));  
+title('5*5高斯滤波器')  
+subplot(2,2,4)  
+imshow(imfilter(t1,g3));  
+title('7*7高斯滤波器')  
+
+figure(2)  
+subplot(2,2,1)  
+imshow(t1);  
+title('原图')  
+subplot(2,2,2)  
+imshow(medfilt2(t1,[3,3]));  
+title('3*3中值滤波器')  
+subplot(2,2,3)  
+imshow(medfilt2(t1,[5,5]));  
+title('5*5中值滤波器')  
+subplot(2,2,4)  
+imshow(medfilt2(t1,[7,7]));  
+title('7*7中值滤波器')  
+
+figure(3)  
+subplot(2,2,1)  
+imshow(t2);  
+title('原图')  
+subplot(2,2,2)  
+imshow(imfilter(t2,g1));  
+title('3*3高斯滤波器')  
+subplot(2,2,3)  
+imshow(imfilter(t2,g2));  
+title('5*5高斯滤波器')  
+subplot(2,2,4)  
+imshow(imfilter(t2,g3));  
+title('7*7高斯滤波器')
+
+figure(4)  
+subplot(2,2,1)  
+imshow(t2);  
+title('原图')  
+subplot(2,2,2)  
+imshow(medfilt2(t2,[3,3]));  
+title('3*3中值滤波器')  
+subplot(2,2,3)  
+imshow(medfilt2(t2,[5,5]));  
+title('5*5中值滤波器')  
+subplot(2,2,4)  
+imshow(medfilt2(t2,[7,7]));  
+title('7*7中值滤波器')  
+
+%two:
+t1=imread('test1.pgm');  
+t2=imread('test2.tif');  
+ 
+g1=fspecial('gaussian',[3,3],1.5);  
+g3=fspecial('gaussian',[15,15],1.5);  
+
+figure(1)  
+subplot(2,2,1)  
+imshow(t1);  
+title('原图')  
+subplot(2,2,2)  
+imshow(imfilter(t1,g1));  
+title('3*3高斯滤波器')  
+subplot(2,2,3)  
+imshow(imfilter(t1,g3));  
+title('15*15高斯滤波器')  
+subplot(2,2,4)  
+imshow(imgaussfilt(t1,1.5));  
+title('内置高斯滤波器')  
+
+figure(3)  
+subplot(2,2,1)  
+imshow(t2);  
+title('原图')  
+subplot(2,2,2)  
+imshow(imfilter(t2,g1));  
+title('3*3高斯滤波器')  
+subplot(2,2,3)  
+imshow(imfilter(t2,g3));  
+title('15*15高斯滤波器')  
+subplot(2,2,4)  
+imshow(imgaussfilt(t2,1.5));  
+title('内置高斯滤波器')  
+
+%three:
+t3=imread('test3_corrupt.pgm');  
+t4=imread('test4 copy.bmp');  
+
+g1=fspecial('gaussian',[7,7],1.5);  
+
+t31=imfilter(t3,g1);  
+t32=t3-t31;  
+
+t41=imfilter(t4,g1);  
+t42=t4-t41;  
+
+sx1=[-1,-2,-1;0,0,0;1,2,1];  
+sx2=(-1)*sx1;  
+sy1=[-1,0,1;-2,0,2;-1,0,1];  
+sy2=(-1)*sy1;  
+l=(-1)*[1,1,1;1,-8,1;1,1,1];  
+
+figure(1)  
+subplot(2,2,1)  
+imshow(t32);  
+title('unsharp masking')  
+subplot(2,2,2)   
+imshow(imfilter(t3,sx1)+imfilter(t3,sx2)+imfilter(t3,sy1)+imfilter(t3,sy2));  
+title('Sobel edge detector')  
+subplot(2,2,3)  
+imshow(imfilter(t3,l));  
+title('Laplace edge detection')  
+subplot(2,2,4)  
+imshow(edge(t3,'canny'));  
+title('Canny algorithm')  
+
+figure(2)  
+subplot(2,2,1)  
+imshow(t32+t3);  
+title('unsharp masking') 
+subplot(2,2,2)  
+imshow(t3+imfilter(t3,sx1)+imfilter(t3,sx2)+imfilter(t3,sy1)+imfilter(t3,sy2));  
+title('Sobel edge detector')  
+subplot(2,2,3)  
+imshow(t3+imfilter(t3,l));  
+title('Laplace edge detection')  
+subplot(2,2,4)  
+imshow(t3+uint8(edge(t3,'canny')));  
+title('Canny algorithm')  
+
+figure(3)  
+subplot(2,2,1)  
+imshow(t42);  
+title('unsharp masking')  
+subplot(2,2,2)  
+imshow(imfilter(t4,sx1)+imfilter(t4,sx2)+imfilter(t4,sy1)+imfilter(t4,sy2));  
+title('Sobel edge detector')  
+subplot(2,2,3)   
+imshow(imfilter(t4,l));  
+title('Laplace edge detection')  
+subplot(2,2,4)  
+imshow(edge(t4,'canny'));  
+title('Canny algorithm')  
+
+figure(4)  
+subplot(2,2,1)  
+imshow(t42+t4);  
+title('unsharp masking')  
+subplot(2,2,2)  
+imshow(t4+imfilter(t4,sx1)+imfilter(t4,sx2)+imfilter(t4,sy1)+imfilter(t4,sy2));  
+title('Sobel edge detector')  
+subplot(2,2,3)  
+imshow(t4+imfilter(t4,l));  
+title('Laplace edge detection')  
+subplot(2,2,4)  
+imshow(t4+uint8(edge(t4,'canny')));  
+title('Canny algorithm')
